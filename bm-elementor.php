@@ -1,13 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://valentinecreative.co
  * @since             1.0.0
  * @package           Bm_Elementor
@@ -15,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       Bodymovin Elementor
  * Plugin URI:        https://valentinecreative.co/movin
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Valentine Creative's in-house plugin for implementation of Bodymovin animations within the Elementor interface.
  * Version:           1.0.0
  * Author:            Valentine Creative
  * Author URI:        https://valentinecreative.co
@@ -32,8 +25,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
 

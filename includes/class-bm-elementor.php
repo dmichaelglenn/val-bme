@@ -9,210 +9,269 @@
  * @link       https://valentinecreative.co
  * @since      1.0.0
  *
- * @package    Bm_Elementor
- * @subpackage Bm_Elementor/includes
+ * @package    Bodymovin_Elementor
+ * @subpackage Bodymovin_Elementor/includes
  */
 
 /**
- * The core plugin class.
+ * Main Bodymovin Elementor Class
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
+ * The main class that initiates and runs the plugin.
  *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
- * @since      1.0.0
- * @package    Bm_Elementor
- * @subpackage Bm_Elementor/includes
- * @author     Valentine Creative <hello@valentinecreative.co>
+ * @since 1.0.0
  */
-class Bm_Elementor {
+final class Bodymovin_Elementor {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
+	 * Plugin Version
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Bm_Elementor_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @since 1.0.0
+	 *
+	 * @var string The plugin version.
 	 */
-	protected $loader;
+	const VERSION = '1.0.0';
 
 	/**
-	 * The unique identifier of this plugin.
+	 * Minimum Elementor Version
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @since 1.0.0
+	 *
+	 * @var string Minimum Elementor version required to run the plugin.
 	 */
-	protected $plugin_name;
+	const MINIMUM_ELEMENTOR_VERSION = '2.0.0';
 
 	/**
-	 * The current version of the plugin.
+	 * Minimum PHP Version
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @since 1.0.0
+	 *
+	 * @var string Minimum PHP version required to run the plugin.
 	 */
-	protected $version;
+	const MINIMUM_PHP_VERSION = '7.0';
 
 	/**
-	 * Define the core functionality of the plugin.
+	 * Instance
 	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * @since 1.0.0
 	 *
-	 * @since    1.0.0
+	 * @access private
+	 * @static
+	 *
+	 * @var Bodymovin_Elementor The single instance of the class.
 	 */
-	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
-		} else {
-			$this->version = '1.0.0';
+	private static $_instance = null;
+
+	/**
+	 * Instance
+	 *
+	 * Ensures only one instance of the class is loaded or can be loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 * @static
+	 *
+	 * @return Bodymovin_Elementor An instance of the class.
+	 */
+	public static function instance()
+	{
+
+		if (is_null(self::$_instance)) {
+			self::$_instance = new self();
 		}
-		$this->plugin_name = 'bm-elementor';
-
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
+		return self::$_instance;
 
 	}
 
 	/**
-	 * Load the required dependencies for this plugin.
+	 * Constructor
 	 *
-	 * Include the following files that make up the plugin:
+	 * @since 1.0.0
 	 *
-	 * - Bm_Elementor_Loader. Orchestrates the hooks of the plugin.
-	 * - Bm_Elementor_i18n. Defines internationalization functionality.
-	 * - Bm_Elementor_Admin. Defines all hooks for the admin area.
-	 * - Bm_Elementor_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @access public
 	 */
-	private function load_dependencies() {
+	public function __construct()
+	{
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-bm-elementor-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-bm-elementor-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bm-elementor-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-bm-elementor-public.php';
-
-		$this->loader = new Bm_Elementor_Loader();
+		add_action('init', [$this, 'i18n']);
+		add_action('plugins_loaded', [$this, 'init']);
 
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
+	 * Load Textdomain
 	 *
-	 * Uses the Bm_Elementor_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
+	 * Load plugin localization files.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * Fired by `init` action hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	private function set_locale() {
+	public function i18n()
+	{
 
-		$plugin_i18n = new Bm_Elementor_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		load_plugin_textdomain('bodymovin-elementor');
 
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
+	 * Initialize the plugin
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * Load the plugin only after Elementor (and other plugins) are loaded.
+	 * Checks for basic plugin requirements, if one check fail don't continue,
+	 * if all check have passed load the files required to run the plugin.
+	 *
+	 * Fired by `plugins_loaded` action hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	private function define_admin_hooks() {
+	public function init()
+	{
 
-		$plugin_admin = new Bm_Elementor_Admin( $this->get_plugin_name(), $this->get_version() );
+		// Check if Elementor installed and activated
+		if (!did_action('elementor/loaded')) {
+			add_action('admin_notices', [$this, 'admin_notice_missing_main_plugin']);
+			return;
+		}
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		// Check for required Elementor version
+		if (!version_compare(ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_elementor_version']);
+			return;
+		}
+
+		// Check for required PHP version
+		if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_php_version']);
+			return;
+		}
+
+		// Add Plugin actions
+		add_action('elementor/widgets/widgets_registered', [$this, 'init_widgets']);
+		add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
+	}
+
+	/**
+	 * Admin notice
+	 *
+	 * Warning when the site doesn't have Elementor installed or activated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function admin_notice_missing_main_plugin()
+	{
+
+		if (isset($_GET['activate'])) unset($_GET['activate']);
+
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor */
+			esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'bodymovin-elementor'),
+			'<strong>' . esc_html__('Bodymovin Elementor', 'bodymovin-elementor') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'bodymovin-elementor') . '</strong>'
+		);
+
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
 	}
 
 	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
+	 * Admin notice
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * Warning when the site doesn't have a minimum required Elementor version.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	private function define_public_hooks() {
+	public function admin_notice_minimum_elementor_version()
+	{
 
-		$plugin_public = new Bm_Elementor_Public( $this->get_plugin_name(), $this->get_version() );
+		if (isset($_GET['activate'])) unset($_GET['activate']);
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'bodymovin-elementor'),
+			'<strong>' . esc_html__('Bodymovin Elementor', 'bodymovin-elementor') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'bodymovin-elementor') . '</strong>',
+			self::MINIMUM_ELEMENTOR_VERSION
+		);
+
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
 	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Admin notice
 	 *
-	 * @since    1.0.0
+	 * Warning when the site doesn't have a minimum required PHP version.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	public function run() {
-		$this->loader->run();
+	public function admin_notice_minimum_php_version()
+	{
+
+		if (isset($_GET['activate'])) unset($_GET['activate']);
+
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'bodymovin-elementor'),
+			'<strong>' . esc_html__('Bodymovin Elementor', 'bodymovin-elementor') . '</strong>',
+			'<strong>' . esc_html__('PHP', 'bodymovin-elementor') . '</strong>',
+			self::MINIMUM_PHP_VERSION
+		);
+
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
+	 * Init Widgets
 	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
+	 * Include widgets files and register them
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
+	public function init_widgets()
+	{
+
+		// Include Widget files
+		require_once(__DIR__ . '/widgets/bm-widget.php');
+
+		// Register widget
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Bodymovin_Widget());
+
 	}
 
 	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
+	 * Init Controls
 	 *
-	 * @since     1.0.0
-	 * @return    Bm_Elementor_Loader    Orchestrates the hooks of the plugin.
+	 * Include controls files and register them
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
 	 */
-	public function get_loader() {
-		return $this->loader;
-	}
+	public function init_controls()
+	{
 
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
-	 */
-	public function get_version() {
-		return $this->version;
+		// Include Control files
+		require_once(__DIR__ . '/controls/bm-control.php');
+
+		// Register control
+		\Elementor\Plugin::$instance->controls_manager->register_control('control-type-', new \BM_Control());
+
 	}
 
 }
+
+Bodymovin_Elementor::instance();
