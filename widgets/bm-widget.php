@@ -93,8 +93,8 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             'the-object',
             [
                 'label' => __('Bodymovin Object', 'bodymovin-elementor'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'input_type' => 'text',
+                'type' => \Elementor\Controls_Manager::CODE,
+                'input_type' => 'JSON',
                 'placeholder' => __('Put da object hurr', 'bodymovin-elementor'),
             ]
         );
@@ -111,6 +111,8 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
      * @since 1.0.0
      * @access protected
      */
+
+
     protected function render()
     {
         echo '<div id="draw" style="width: 100%; height: 100%;"></div>';
@@ -119,7 +121,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         ?>
 
         <script type="text/javascript">
-            var passedObj = <?php echo json_encode($pass_obj); ?>;
+            var passedObj = <?php echo $pass_obj; ?>;
             // console.log(passedObj); 
         </script>
 
