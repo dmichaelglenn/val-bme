@@ -84,18 +84,18 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Content', 'plugin-name'),
+                'label' => __('Content', 'bodymovin-elementor'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
 
         $this->add_control(
-            'url',
+            'the-object',
             [
-                'label' => __('URL to embed', 'plugin-name'),
+                'label' => __('Bodymovin Object', 'bodymovin-elementor'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'input_type' => 'url',
-                'placeholder' => __('https://your-link.com', 'plugin-name'),
+                'input_type' => 'text',
+                'placeholder' => __('Put da object hurr', 'bodymovin-elementor'),
             ]
         );
 
@@ -113,16 +113,13 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
      */
     protected function render()
     {
+        echo '<div id="draw"></div>';
+        $bm_obj = $this->get_settings_for_display('the-object');
+        // echo '<h3>' . print_r($bm_obj) . '</h3>';
 
-        $settings = $this->get_settings_for_display();
-
-        $html = wp_oembed_get($settings['url']);
-
-        echo '<div class="oembed-elementor-widget">';
-
-        echo ($html) ? $html : $settings['url'];
-
-        echo '</div>';
+        $js = '<script>animation = bodymovin.loadAnimation({ container: document.getElementById("draw"), renderer: " html ", loop: true, autoplay: true, animationData: ' . $bm_obj . '});</script>';
+        
+        echo $js;
 
     }
 

@@ -156,13 +156,6 @@ final class Elementor_Bodymovin_Extension
 		add_action('elementor/frontend/after_register_scripts', [$this, 'widget_scripts']);
 	}
 
-	public function widget_scripts()
-	{
-
-		wp_register_script('some-library', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.13.0/bodymovin.min.js', __FILE__);
-
-	}
-
 	/**
 	 * Admin notice
 	 *
@@ -238,6 +231,13 @@ final class Elementor_Bodymovin_Extension
 
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
+	}
+
+
+	public function widget_scripts()
+	{
+		wp_enqueue_script('lottie', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.13.0/bodymovin.js', 'jQuery');
+		// wp_enqueue_script('lottie');
 	}
 
 	/**
