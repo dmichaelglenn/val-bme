@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Bodymovin Elementor
  * Description: Extends Elementor with the ability to incorporate Bodymovin renders within pages
@@ -8,104 +9,277 @@
  * Author URI: https://valentinecreative.co
  *
  * Text Domain: val-bodymovin
-*/
+ */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
-define( 'BODYMOVIN_ELEMENTOR_VERSION', '1.0.0' );
-
-define( 'BODYMOVIN_ELEMENTOR__FILE__', __FILE__ );
-define( 'BODYMOVIN_ELEMENTOR_PLUGIN_BASE', plugin_basename( BODYMOVIN_ELEMENTOR__FILE__ ) );
-define( 'BODYMOVIN_ELEMENTOR_PATH', plugin_dir_path( BODYMOVIN_ELEMENTOR__FILE__ ) );
-define( 'BODYMOVIN_ELEMENTOR_MODULES_PATH', BODYMOVIN_ELEMENTOR_PATH . 'modules/' );
-define( 'BODYMOVIN_ELEMENTOR_URL', plugins_url( '/', BODYMOVIN_ELEMENTOR__FILE__ ) );
-define( 'BODYMOVIN_ELEMENTOR_ASSETS_URL', BODYMOVIN_ELEMENTOR_URL . 'assets/' );
-define( 'BODYMOVIN_ELEMENTOR_MODULES_URL', BODYMOVIN_ELEMENTOR_URL . 'modules/' );
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 /**
- * Load gettext translate for our text domain.
+ *
+ * The main class that initiates and runs the plugin.
  *
  * @since 1.0.0
- *
- * @return void
  */
-function bodymovin_elementor_load_plugin() {
-	load_plugin_textdomain( 'bodymovin-elementor' );
+final class Elementor_Bodymovin_Extension
+{
 
-	if ( ! did_action( 'elementor/loaded' ) ) {
-		add_action( 'admin_notices', 'bodymovin_elementor_fail_load' );
-		return;
+	/**
+	 * Plugin Version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string The plugin version.
+	 */
+	const VERSION = '1.0.0';
+
+	/**
+	 * Minimum Elementor Version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string Minimum Elementor version required to run the plugin.
+	 */
+	const MINIMUM_ELEMENTOR_VERSION = '2.0.0';
+
+	/**
+	 * Minimum PHP Version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string Minimum PHP version required to run the plugin.
+	 */
+	const MINIMUM_PHP_VERSION = '7.0';
+
+	/**
+	 * Instance
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access private
+	 * @static
+	 *
+	 * @var Elementor_Bodymovin_Extension The single instance of the class.
+	 */
+	private static $_instance = null;
+
+	/**
+	 * Instance
+	 *
+	 * Ensures only one instance of the class is loaded or can be loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 * @static
+	 *
+	 * @return Elementor_Bodymovin_Extension An instance of the class.
+	 */
+	public static function instance()
+	{
+
+		if (is_null(self::$_instance)) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+
 	}
 
-	$elementor_version_required = '1.0.6';
-	if ( ! version_compare( ELEMENTOR_VERSION, $elementor_version_required, '>=' ) ) {
-		add_action( 'admin_notices', 'bodymovin_elementor_fail_load_out_of_date' );
-		return;
+	/**
+	 * Constructor
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function __construct()
+	{
+
+		add_action('init', [$this, 'i18n']);
+		add_action('plugins_loaded', [$this, 'init']);
+
 	}
 
-	require( BODYMOVIN_ELEMENTOR_PATH . 'plugin.php' );
-}
-add_action( 'plugins_loaded', 'bodymovin_elementor_load_plugin' );
+	/**
+	 * Load Textdomain
+	 *
+	 * Load plugin localization files.
+	 *
+	 * Fired by `init` action hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function i18n()
+	{
 
-/**
- * Show in WP Dashboard notice about the plugin is not activated.
- *
- * @since 1.0.0
- *
- * @return void
- */
-function bodymovin_elementor_fail_load() {
-	$screen = get_current_screen();
-	if ( isset( $screen->parent_file ) && 'plugins.php' === $screen->parent_file && 'update' === $screen->id ) {
-		return;
+		load_plugin_textdomain('elementor-bodymovin-extension');
+
 	}
 
-	$plugin = 'elementor/elementor.php';
+	/**
+	 * Initialize the plugin
+	 *
+	 * Load the plugin only after Elementor (and other plugins) are loaded.
+	 * Checks for basic plugin requirements, if one check fail don't continue,
+	 * if all check have passed load the files required to run the plugin.
+	 *
+	 * Fired by `plugins_loaded` action hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function init()
+	{
 
-	if ( _is_elementor_installed() ) {
-		if ( ! current_user_can( 'activate_plugins' ) ) {
+		// Check if Elementor installed and activated
+		if (!did_action('elementor/loaded')) {
+			add_action('admin_notices', [$this, 'admin_notice_missing_main_plugin']);
 			return;
 		}
 
-		$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin );
-
-		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to activate the Elementor plugin.', 'bodymovin-elementor' ) . '</p>';
-		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $activation_url, __( 'Activate Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
-	} else {
-		if ( ! current_user_can( 'install_plugins' ) ) {
+		// Check for required Elementor version
+		if (!version_compare(ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_elementor_version']);
 			return;
 		}
 
-		$install_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=elementor' ), 'install-plugin_elementor' );
+		// Check for required PHP version
+		if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
+			add_action('admin_notices', [$this, 'admin_notice_minimum_php_version']);
+			return;
+		}
 
-		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to install the Elementor plugin', 'bodymovin-elementor' ) . '</p>';
-		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $install_url, __( 'Install Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
+		// Add Plugin actions
+		add_action('elementor/widgets/widgets_registered', [$this, 'init_widgets']);
+		add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
+		add_action('elementor/frontend/after_register_scripts', [$this, 'widget_scripts']);
 	}
 
-	echo '<div class="error"><p>' . $message . '</p></div>';
-}
+	public function widget_scripts()
+	{
 
-function bodymovin_elementor_fail_load_out_of_date() {
-	if ( ! current_user_can( 'update_plugins' ) ) {
-		return;
+		wp_register_script('some-library', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.13.0/bodymovin.min.js', __FILE__);
+
 	}
 
-	$file_path = 'elementor/elementor.php';
+	/**
+	 * Admin notice
+	 *
+	 * Warning when the site doesn't have Elementor installed or activated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function admin_notice_missing_main_plugin()
+	{
 
-	$upgrade_link = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file_path, 'upgrade-plugin_' . $file_path );
-	$message = '<p>' . __( 'Bodymovin Elementor is not working because you are using an old version of Elementor.', 'bodymovin-elementor' ) . '</p>';
-	$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $upgrade_link, __( 'Update Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
+		if (isset($_GET['activate'])) unset($_GET['activate']);
 
-	echo '<div class="error">' . $message . '</div>';
-}
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor */
+			esc_html__('"%1$s" requires "%2$s" to be installed and activated.', 'elementor-bodymovin-extension'),
+			'<strong>' . esc_html__('Elementor Bodymovin Extension', 'elementor-bodymovin-extension') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'elementor-bodymovin-extension') . '</strong>'
+		);
 
-if ( ! function_exists( '_is_elementor_installed' ) ) {
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
 
-	function _is_elementor_installed() {
-		$file_path = 'elementor/elementor.php';
-		$installed_plugins = get_plugins();
-
-		return isset( $installed_plugins[ $file_path ] );
 	}
+
+	/**
+	 * Admin notice
+	 *
+	 * Warning when the site doesn't have a minimum required Elementor version.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function admin_notice_minimum_elementor_version()
+	{
+
+		if (isset($_GET['activate'])) unset($_GET['activate']);
+
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'elementor-bodymovin-extension'),
+			'<strong>' . esc_html__('Elementor Bodymovin Extension', 'elementor-bodymovin-extension') . '</strong>',
+			'<strong>' . esc_html__('Elementor', 'elementor-bodymovin-extension') . '</strong>',
+			self::MINIMUM_ELEMENTOR_VERSION
+		);
+
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+
+	}
+
+	/**
+	 * Admin notice
+	 *
+	 * Warning when the site doesn't have a minimum required PHP version.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function admin_notice_minimum_php_version()
+	{
+
+		if (isset($_GET['activate'])) unset($_GET['activate']);
+
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
+			esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'elementor-bodymovin-extension'),
+			'<strong>' . esc_html__('Elementor Bodymovin Extension', 'elementor-bodymovin-extension') . '</strong>',
+			'<strong>' . esc_html__('PHP', 'elementor-bodymovin-extension') . '</strong>',
+			self::MINIMUM_PHP_VERSION
+		);
+
+		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
+
+	}
+
+	/**
+	 * Init Widgets
+	 *
+	 * Include widgets files and register them
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function init_widgets()
+	{
+
+		// Include Widget files
+		require_once(__DIR__ . '/widgets/bm-widget.php');
+
+		// Register widget
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Bodymovin_Widget());
+
+	}
+
+	/**
+	 * Init Controls
+	 *
+	 * Include controls files and register them
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
+	public function init_controls()
+	{
+
+		// Include Control files
+		require_once(__DIR__ . '/controls/bm-control.php');
+
+		// Register control
+		\Elementor\Plugin::$instance->controls_manager->register_control('control-type-1', new \Bodymovin_Control());
+
+	}
+
 }
 
+Elementor_Bodymovin_Extension::instance();
