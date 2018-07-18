@@ -237,7 +237,7 @@ final class Elementor_Bodymovin_Extension
 	public function widget_scripts()
 	{
 		wp_enqueue_script('lottie', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.13.0/bodymovin.js', 'jQuery');
-		wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js', 'jquery');
+		wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js');
 		// the script below is for when we aren't on a local install
 		// wp_enqueue_script('val-bm-js', dirname(__FILE__) .  '/assets/js/val-bm.js', 'jQuery');
 	}

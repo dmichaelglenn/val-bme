@@ -16,9 +16,6 @@ addLoadEvent(domReady)};DomReady.ready=function(fn,args){bindReady();if(isReady)
 
 DomReady.ready(function() {
 
-    console.log('skrt');
-    console.log(passedObj);
-
     for (var i = 0, len = passedObj.length; i < len; i++ ) {
         name = passedObj[i].name;
         obj = passedObj[i].obj;
@@ -37,25 +34,6 @@ DomReady.ready(function() {
     anim = bodymovin.loadAnimation(params);
     }
 
-
-    // var animationData = passedObj;
-    // console.log(animId);
-    // console.log(animationData);
-
-
-
-
-    // var params = {
-    //     container: animId,
-    //     renderer: 'svg',
-    //     loop: true,
-    //     autoplay: true,
-    //     animationData: passedObj
-    // };
-
-    // var anim;
-
-    // anim = bodymovin.loadAnimation(params);
 })
 
 
