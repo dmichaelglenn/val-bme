@@ -1,7 +1,7 @@
 <?php
-namespace ElementorStarter\Modules\Starter;
+namespace BodymovinElementor\Modules\Starter;
 
-use ElementorStarter\Base\Module_Base;
+use BodymovinElementor\Base\Module_Base;
 
 class Module extends Module_Base {
 
@@ -12,7 +12,7 @@ class Module extends Module_Base {
 	}
 	
 	public function get_name() {
-		return 'elementor-starter';
+		return 'bodymovin-elementor';
 	}
 
 	public function get_widgets() {

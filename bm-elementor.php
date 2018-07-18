@@ -30,7 +30,7 @@ define( 'BODYMOVIN_ELEMENTOR_MODULES_URL', BODYMOVIN_ELEMENTOR_URL . 'modules/' 
  * @return void
  */
 function bodymovin_elementor_load_plugin() {
-	load_plugin_textdomain( 'elementor-starter' );
+	load_plugin_textdomain( 'bodymovin-elementor' );
 
 	if ( ! did_action( 'elementor/loaded' ) ) {
 		add_action( 'admin_notices', 'bodymovin_elementor_fail_load' );
@@ -69,8 +69,8 @@ function bodymovin_elementor_fail_load() {
 
 		$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin );
 
-		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to activate the Elementor plugin.', 'elementor-starter' ) . '</p>';
-		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $activation_url, __( 'Activate Elementor Now', 'elementor-starter' ) ) . '</p>';
+		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to activate the Elementor plugin.', 'bodymovin-elementor' ) . '</p>';
+		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $activation_url, __( 'Activate Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
 	} else {
 		if ( ! current_user_can( 'install_plugins' ) ) {
 			return;
@@ -78,8 +78,8 @@ function bodymovin_elementor_fail_load() {
 
 		$install_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=elementor' ), 'install-plugin_elementor' );
 
-		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to install the Elementor plugin', 'elementor-starter' ) . '</p>';
-		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $install_url, __( 'Install Elementor Now', 'elementor-starter' ) ) . '</p>';
+		$message = '<p>' . __( 'Bodymovin Elementor is not working because you need to install the Elementor plugin', 'bodymovin-elementor' ) . '</p>';
+		$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $install_url, __( 'Install Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
 	}
 
 	echo '<div class="error"><p>' . $message . '</p></div>';
@@ -93,8 +93,8 @@ function bodymovin_elementor_fail_load_out_of_date() {
 	$file_path = 'elementor/elementor.php';
 
 	$upgrade_link = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file_path, 'upgrade-plugin_' . $file_path );
-	$message = '<p>' . __( 'Bodymovin Elementor is not working because you are using an old version of Elementor.', 'elementor-starter' ) . '</p>';
-	$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $upgrade_link, __( 'Update Elementor Now', 'elementor-starter' ) ) . '</p>';
+	$message = '<p>' . __( 'Bodymovin Elementor is not working because you are using an old version of Elementor.', 'bodymovin-elementor' ) . '</p>';
+	$message .= '<p>' . sprintf( '<a href="%s" class="button-primary">%s</a>', $upgrade_link, __( 'Update Elementor Now', 'bodymovin-elementor' ) ) . '</p>';
 
 	echo '<div class="error">' . $message . '</div>';
 }

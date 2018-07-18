@@ -1,5 +1,5 @@
 <?php
-namespace ElementorStarter\Base;
+namespace BodymovinElementor\Base;
 
 abstract class Module_Base {
 
@@ -26,7 +26,7 @@ abstract class Module_Base {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'elementor-starter' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bodymovin-elementor' ), '1.0.0' );
 	}
 
 	/**
@@ -37,7 +37,7 @@ abstract class Module_Base {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'elementor-starter' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bodymovin-elementor' ), '1.0.0' );
 	}
 
 	public static function class_name() {
@@ -58,7 +58,7 @@ abstract class Module_Base {
 	abstract public function get_name();
 
 	public function get_assets_url() {
-		return ELEMENTOR_STARTER_MODULES_URL . $this->get_name() . '/assets/';
+		return BODYMOVIN_ELEMENTOR_MODULES_URL . $this->get_name() . '/assets/';
 	}
 
 	public function get_widgets() {

@@ -1,5 +1,5 @@
 <?php
-namespace ElementorStarter;
+namespace BodymovinElementor;
 
 use Elementor\Utils;
 use Elementor\Controls_Manager;
@@ -30,7 +30,7 @@ class Plugin {
 	 * @return string
 	 */
 	public function get_version() {
-		return ELEMENTOR_STARTER_VERSION;
+		return BODYMOVIN_ELEMENTOR_VERSION;
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Plugin {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'elementor-starter' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bodymovin-elementor' ), '1.0.0' );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Plugin {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'elementor-starter' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'bodymovin-elementor' ), '1.0.0' );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Plugin {
 	}
 
 	private function _includes() {
-		require ELEMENTOR_STARTER_PATH . 'includes/modules-manager.php';
+		require BODYMOVIN_ELEMENTOR_PATH . 'includes/modules-manager.php';
 	}
 
 	public function autoload( $class ) {
@@ -85,7 +85,7 @@ class Plugin {
 				$class
 			)
 		);
-		$filename = ELEMENTOR_STARTER_PATH . $filename . '.php';
+		$filename = BODYMOVIN_ELEMENTOR_PATH . $filename . '.php';
 
 		if ( is_readable( $filename ) ) {
 			include( $filename );
@@ -118,8 +118,8 @@ class Plugin {
 		$direction_suffix = is_rtl() ? '-rtl' : '';
 
 		wp_enqueue_style(
-			'elementor-starter',
-			ELEMENTOR_STARTER_URL . 'assets/css/frontend' . $direction_suffix . $suffix . '.css',
+			'bodymovin-elementor',
+			BODYMOVIN_ELEMENTOR_URL . 'assets/css/frontend' . $direction_suffix . $suffix . '.css',
 			[],
 			Plugin::instance()->get_version()
 		);
@@ -129,8 +129,8 @@ class Plugin {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_enqueue_script(
-			'elementor-starter-js',
-			ELEMENTOR_STARTER_URL . 'assets/js/frontend' . $suffix . '.js',
+			'bodymovin-elementor-js',
+			BODYMOVIN_ELEMENTOR_URL . 'assets/js/frontend' . $suffix . '.js',
 			[
 				'jquery',
 			],
@@ -139,11 +139,11 @@ class Plugin {
 		);
 		
 		wp_localize_script(
-			'elementor-starter-js',
-			'ElementorStarterFrontendConfig', // This is used in the js file to group all of your scripts together
+			'bodymovin-elementor-js',
+			'BodymovinElementorFrontendConfig', // This is used in the js file to group all of your scripts together
 			[
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'nonce' => wp_create_nonce( 'elementor-starter-js' ),
+				'nonce' => wp_create_nonce( 'bodymovin-elementor-js' ),
 			]
 		);
 	}
@@ -159,10 +159,10 @@ class Plugin {
 
 		// Add element category in panel
 		\Elementor\Plugin::instance()->elements_manager->add_category(
-			'elementor-start-widgets', // This is the name of your addon's category and will be used to group your widgets/elements in the Edit sidebar pane!
+			'valentine-widgets', // This is the name of your addon's category and will be used to group your widgets/elements in the Edit sidebar pane!
 			[
-				'title' => __( 'Starter Widgets', 'elementor-starter' ), // The title of your modules category - keep it simple and short!
-				'icon' => 'font',
+				'title' => __( 'Valentine Creative Widgets', 'bodymovin-elementor' ), // The title of your modules category - keep it simple and short!
+				'icon' => 'animation',
 			],
 			1
 		);
@@ -187,7 +187,7 @@ class Plugin {
 	
 }
 
-if ( ! defined( 'ELEMENTOR_STARTER_TESTS' ) ) {
+if ( ! defined( 'BODYMOVIN_ELEMENTOR_TESTS' ) ) {
 	// In tests we run the instance manually.
 	Plugin::instance();
 }

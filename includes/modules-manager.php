@@ -1,5 +1,5 @@
 <?php
-namespace ElementorStarter;
+namespace BodymovinElementor;
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -13,7 +13,7 @@ final class Manager {
 			return true;
 		}
 
-		$options = get_option( 'elementor_starter_active_modules', [] );
+		$options = get_option( 'bodymovin-elementor_active_modules', [] );
 		if ( ! isset( $options[ $module_id ] ) ) {
 			return $module_data['default_activation'];
 		}
@@ -32,7 +32,7 @@ final class Manager {
 
 		// Fetch all modules data
 		foreach ( $modules as $module ) {
-			$this->_modules[ $module ] = require ELEMENTOR_STARTER_MODULES_PATH . $module . '/module.info.php';
+			$this->_modules[ $module ] = require BODYMOVIN_ELEMENTOR_MODULES_PATH . $module . '/module.info.php';
 		}
 
 		foreach ( $this->_modules as $module_id => $module_data ) {

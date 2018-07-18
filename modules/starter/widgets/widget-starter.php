@@ -1,5 +1,5 @@
 <?php
-namespace ElementorStarter\Modules\Starter\Widgets;
+namespace BodymovinElementor\Modules\Starter\Widgets;
 
 // You can add to or remove from this list - it's not conclusive! Chop & change to fit your needs.
 use Elementor\Controls_Manager;
@@ -24,7 +24,7 @@ class Widget_Starter extends Widget_Base {
 	}
 
 	public function get_title() {
-		return __( 'Widget Starter', 'elementor-starter' );
+		return __( 'Widget Starter', 'bodymovin-elementor' );
 	}
 
 	public function get_icon() {
@@ -39,7 +39,7 @@ class Widget_Starter extends Widget_Base {
 		$this->start_controls_section(
 			'section_content',
 			[
-				'label' => __( 'Content', 'elementor-starter' ),
+				'label' => __( 'Content', 'bodymovin-elementor' ),
 			]
 		);
 		// Add your widget/element content controls here! Below is an example control
@@ -47,16 +47,16 @@ class Widget_Starter extends Widget_Base {
 		$this->add_control(
 			'text',
 			[
-				'label' => __( 'Text Field', 'elementor-starter' ),
+				'label' => __( 'Text Field', 'bodymovin-elementor' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => __( 'I\'m an example text as the content if this element!', 'elementor-starter' ),
+				'default' => __( 'I\'m an example text as the content if this element!', 'bodymovin-elementor' ),
 			]
 		);
 		
 		$this->add_control(
 			'view',
 			[
-				'label' => __( 'View', 'elementor-starter' ),
+				'label' => __( 'View', 'bodymovin-elementor' ),
 				'type' => Controls_Manager::HIDDEN,
 				'default' => 'traditional',
 			]
@@ -67,7 +67,7 @@ class Widget_Starter extends Widget_Base {
 		$this->start_controls_section(
 			'section_style',
 			[
-				'label' => __( 'Styles', 'elementor-starter' ),
+				'label' => __( 'Styles', 'bodymovin-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -76,14 +76,14 @@ class Widget_Starter extends Widget_Base {
 		$this->add_control(
 			'text_transform',
 			[
-				'label' => __( 'Text Transform', 'elementor-starter' ),
+				'label' => __( 'Text Transform', 'bodymovin-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => '',
 				'options' => [
-					'' => __( 'None', 'elementor-starter' ),
-					'uppercase' => __( 'UPPERCASE', 'elementor-starter' ),
-					'lowercase' => __( 'lowercase', 'elementor-starter' ),
-					'capitalize' => __( 'Capitalize', 'elementor-starter' ),
+					'' => __( 'None', 'bodymovin-elementor' ),
+					'uppercase' => __( 'UPPERCASE', 'bodymovin-elementor' ),
+					'lowercase' => __( 'lowercase', 'bodymovin-elementor' ),
+					'capitalize' => __( 'Capitalize', 'bodymovin-elementor' ),
 				],
 				'selectors' => [
 					'{{WRAPPER}} .title' => 'text-transform: {{VALUE}};',
