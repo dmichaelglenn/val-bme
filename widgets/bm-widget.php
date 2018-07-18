@@ -113,13 +113,22 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
      */
     protected function render()
     {
-        echo '<div id="draw"></div>';
-        $bm_obj = $this->get_settings_for_display('the-object');
+        echo '<div id="draw" style="width: 100%; height: 100%;"></div>';
+        // $bm_obj = $this->get_settings_for_display('theobject');
+        $pass_obj = $this->get_settings_for_display("the-object");
+        ?>
+
+        <script type="text/javascript">
+            var passedObj = <?php echo json_encode($pass_obj); ?>;
+            // console.log(passedObj); 
+        </script>
+
+        <?php 
         // echo '<h3>' . print_r($bm_obj) . '</h3>';
 
-        $js = '<script>animation = bodymovin.loadAnimation({ container: document.getElementById("draw"), renderer: " html ", loop: true, autoplay: true, animationData: ' . $bm_obj . '});</script>';
+        // $js = '<script>animation = bodymovin.loadAnimation({ container: document.getElementById("draw"), renderer: " html ", loop: true, autoplay: true, animationData: ' . $bm_obj . '});</script>';
         
-        echo $js;
+        // echo $js;
 
     }
 
