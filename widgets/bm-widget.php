@@ -90,12 +90,22 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
+            'animname',
+            [
+                'label' => __('Animation Name', 'bodymovin-elementor'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'input_type' => 'text',
+                'placeholder' => __('A unique name for this animation - no spaces or special characters.', 'bodymovin-elementor'),
+            ]
+        );
+
+        $this->add_control(
             'the-object',
             [
                 'label' => __('Bodymovin Object', 'bodymovin-elementor'),
                 'type' => \Elementor\Controls_Manager::CODE,
                 'input_type' => 'JSON',
-                'placeholder' => __('Put da object hurr', 'bodymovin-elementor'),
+                'placeholder' => __('Place the Bodymovin object here.', 'bodymovin-elementor'),
             ]
         );
 
@@ -115,22 +125,18 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
 
     protected function render()
     {
-        echo '<div id="draw" style="width: 100%; height: 100%;"></div>';
-        // $bm_obj = $this->get_settings_for_display('theobject');
         $pass_obj = $this->get_settings_for_display("the-object");
+        $anim_id = $this->get_settings_for_display("animname");
+        echo '<div id="' . $anim_id . '" style="width: 100%; height: 100%;"></div>';
         ?>
 
         <script type="text/javascript">
             var passedObj = <?php echo $pass_obj; ?>;
-            // console.log(passedObj); 
+            var animId = <?php echo $anim_id; ?>;
+            
         </script>
 
         <?php 
-        // echo '<h3>' . print_r($bm_obj) . '</h3>';
-
-        // $js = '<script>animation = bodymovin.loadAnimation({ container: document.getElementById("draw"), renderer: " html ", loop: true, autoplay: true, animationData: ' . $bm_obj . '});</script>';
-        
-        // echo $js;
 
     }
 
