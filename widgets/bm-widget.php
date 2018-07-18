@@ -125,14 +125,39 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
 
     protected function render()
     {
-        $pass_obj = $this->get_settings_for_display("the-object");
+        $anim_obj = $this->get_settings_for_display("the-object");
         $anim_id = $this->get_settings_for_display("animname");
         echo '<div id="' . $anim_id . '" style="width: 100%; height: 100%;"></div>';
-        ?>
+        // function print_var_name($var)
+        // {
+        //     foreach ($GLOBALS as $var_name => $value) {
+        //         if ($value === $var) {
+        //             return $var_name;
+        //         }
+        //     }
+        //     return false;
+        // }
+        // ?>
 
         <script type="text/javascript">
-            var passedObj = <?php echo $pass_obj; ?>;
-            var animId = <?php echo $anim_id; ?>;
+        
+        if (!passedObj) {
+            var passedObj = [];
+        }
+        var animObj = <?php echo $anim_obj; ?>;
+        var animId = "<?php echo $anim_id; ?>";
+        console.log(animId);
+
+        var <?php echo $anim_id ?> = [];
+
+       <?php echo $anim_id ?>.name = animId;
+       <?php echo $anim_id ?>.obj = animObj;
+
+       passedObj.push(<?php echo $anim_id ?>);
+
+       console.log(passedObj);
+
+        // console.log(passedObj);
             
         </script>
 

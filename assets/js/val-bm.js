@@ -16,21 +16,46 @@ addLoadEvent(domReady)};DomReady.ready=function(fn,args){bindReady();if(isReady)
 
 DomReady.ready(function() {
 
-    var animationData = passedObj;
-    console.log(animId);
-    // console.log(animationData);
+    console.log('skrt');
+    console.log(passedObj);
 
-    var params = {
-        container: animId,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        animationData: animationData
-    };
+    for (var i = 0, len = passedObj.length; i < len; i++ ) {
+        name = passedObj[i].name;
+        obj = passedObj[i].obj;
+
+        console.log('hey ' + name);
+        var params = {
+            container: document.getElementById(name),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: obj
+         };
 
     var anim;
 
     anim = bodymovin.loadAnimation(params);
+    }
+
+
+    // var animationData = passedObj;
+    // console.log(animId);
+    // console.log(animationData);
+
+
+
+
+    // var params = {
+    //     container: animId,
+    //     renderer: 'svg',
+    //     loop: true,
+    //     autoplay: true,
+    //     animationData: passedObj
+    // };
+
+    // var anim;
+
+    // anim = bodymovin.loadAnimation(params);
 })
 
 
