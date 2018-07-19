@@ -171,9 +171,9 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
 
 
         if ('' != $anim_link) {
-            echo '<a href="' .$anim_url . '"'. $target . $nofollow . '>';
+            echo '<a href="' . $anim_url . '"' . $target . $nofollow . '>';
         }
-        echo '<div id="' . $anim_id . '" style="width: 100%; height: 100%;"></div>';
+        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-loop="' . $should_loop . '"></div>';
         if ('' != $anim_link) {
             echo '</a>';
         }
@@ -184,21 +184,9 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             var passedObj = [];
         }
         var animObj = <?php echo $anim_obj; ?>;
-        var animId = "<?php echo $anim_id; ?>";
-        var shouldLoop =  "<?php echo $should_loop; ?>";
-
-        if (shouldLoop === 'yes') {
-            shouldLoop = true;
-        } else {
-            shouldLoop = false;
-        }
-
-       var <?php echo $anim_id ?> = [];
-       <?php echo $anim_id ?>.name = animId;
-       <?php echo $anim_id ?>.obj = animObj;
-       <?php echo $anim_id ?>.loop = shouldLoop;
+        var <?php echo $anim_id ?> = [];
+        <?php echo $anim_id ?>.obj = animObj;
        
-
        passedObj.push(<?php echo $anim_id ?>);
         </script>
 

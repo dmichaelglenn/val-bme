@@ -16,10 +16,18 @@ addLoadEvent(domReady)};DomReady.ready=function(fn,args){bindReady();if(isReady)
 
 DomReady.ready(function() {
 
-    for (var i = 0, len = passedObj.length; i < len; i++ ) {
-        name = passedObj[i].name;
+    var annies = document.getElementsByClassName('val-bme');
+    // console.log(annies);
+    for (var i = 0, len = annies.length; i < len; i++ ) {
+        name = annies[i].id;
         obj = passedObj[i].obj;
-        loopy = passedObj[i].loop;
+        loopy = annies[i].dataset.shouldLoop;
+        if (loopy === 'yes') {
+            loopy = true;
+        } else {
+            loopy = false;
+        }
+
 
         var params = {
             container: document.getElementById(name),
