@@ -100,6 +100,21 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
+            'animlink',
+            [
+                'label' => __('Link', 'plugin-domain'),
+                'type' => \Elementor\Controls_Manager::URL,
+                'placeholder' => __('https://your-link.com', 'bodymovin-elementor'),
+                'show_external' => true,
+                'default' => [
+                    'url' => '',
+                    'is_external' => true,
+                    'nofollow' => true,
+                ],
+            ]
+        );
+
+        $this->add_control(
             'the-object',
             [
                 'label' => __('Bodymovin Object', 'bodymovin-elementor'),
@@ -108,6 +123,26 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
                 'placeholder' => __('Place the Bodymovin object here.', 'bodymovin-elementor'),
             ]
         );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'animsettings',
+            [
+                'label' => __('Animation Settings', 'bodymovin-elementor'),
+                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+            ]
+        );
+
+        $this->add_control(
+            'shouldloop',
+            [
+                'label' => __('Loop Animation', 'bodymovin-elementor'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'input_type' => 'switcher'
+            ]
+        );
+
 
         $this->end_controls_section();
 
@@ -127,8 +162,21 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
     {
         $anim_obj = $this->get_settings_for_display("the-object");
         $anim_id = $this->get_settings_for_display("animname");
+        $anim_link = $this->get_settings_for_display("animlink");
+        $should_loop = $this->get_settings_for_display("shouldloop");
+        $target = $anim_link['is_external'] ? ' target="_blank"' : '';
+        $nofollow = $anim_link['nofollow'] ? ' rel="nofollow"' : '';
+        $anim_url = $anim_link['url'];
         $anim_id = preg_replace("/[^A-Za-z0-9]/", '', $anim_id);
+
+
+        if ('' != $anim_link) {
+            echo '<a href="' .$anim_url . '"'. $target . $nofollow . '>';
+        }
         echo '<div id="' . $anim_id . '" style="width: 100%; height: 100%;"></div>';
+        if ('' != $anim_link) {
+            echo '</a>';
+        }
         ?>
 
         <script type="text/javascript">
@@ -137,10 +185,19 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         }
         var animObj = <?php echo $anim_obj; ?>;
         var animId = "<?php echo $anim_id; ?>";
+        var shouldLoop =  "<?php echo $should_loop; ?>";
+
+        if (shouldLoop === 'yes') {
+            shouldLoop = true;
+        } else {
+            shouldLoop = false;
+        }
 
        var <?php echo $anim_id ?> = [];
        <?php echo $anim_id ?>.name = animId;
        <?php echo $anim_id ?>.obj = animObj;
+       <?php echo $anim_id ?>.loop = shouldLoop;
+       
 
        passedObj.push(<?php echo $anim_id ?>);
         </script>

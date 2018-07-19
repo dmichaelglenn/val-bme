@@ -19,12 +19,12 @@ DomReady.ready(function() {
     for (var i = 0, len = passedObj.length; i < len; i++ ) {
         name = passedObj[i].name;
         obj = passedObj[i].obj;
+        loopy = passedObj[i].loop;
 
-        console.log('hey ' + name);
         var params = {
             container: document.getElementById(name),
             renderer: 'svg',
-            loop: true,
+            loop: loopy,
             autoplay: true,
             animationData: obj
          };
