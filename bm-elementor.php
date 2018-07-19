@@ -154,6 +154,15 @@ final class Elementor_Bodymovin_Extension
 		add_action('elementor/widgets/widgets_registered', [$this, 'init_widgets']);
 		add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
 		add_action('elementor/frontend/after_register_scripts', [$this, 'widget_scripts']);
+
+		// Check Github repo for updates
+
+		require 'plugin-update-checker/plugin-update-checker.php';
+		$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+			'https://github.com/dmichaelglenn/val-bme',
+			__FILE__,
+			'bm-elementor'
+		);
 	}
 
 	/**
@@ -282,6 +291,10 @@ final class Elementor_Bodymovin_Extension
 
 	}
 
+	function val_update() {
+
+	}
 }
+
 
 Elementor_Bodymovin_Extension::instance();
