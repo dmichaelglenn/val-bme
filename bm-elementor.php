@@ -5,7 +5,7 @@
  * Description: Extends Elementor with the ability to incorporate Bodymovin renders within pages
  * Plugin URI: https://valentinecreative.co
  * Author: Valentine Creative
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author URI: https://valentinecreative.co
  *
  * Text Domain: val-bodymovin
