@@ -178,8 +178,9 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             echo '</a>';
         }
         ?>
-
+        <!-- refactor out once we can pass object as data attribute -->
         <script type="text/javascript">
+        
         if (!passedObj) {
             var passedObj = [];
         }
