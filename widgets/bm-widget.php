@@ -95,7 +95,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
                 'label' => __('Animation Name', 'bodymovin-elementor'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'input_type' => 'text',
-                'placeholder' => __('A unique name for this animation - no spaces or special characters.', 'bodymovin-elementor'),
+                'placeholder' => __('A unique name for this animation.', 'bodymovin-elementor'),
             ]
         );
 
@@ -127,6 +127,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
     {
         $anim_obj = $this->get_settings_for_display("the-object");
         $anim_id = $this->get_settings_for_display("animname");
+        $anim_id = preg_replace("/[^A-Za-z0-9]/", '', $anim_id);
         echo '<div id="' . $anim_id . '" style="width: 100%; height: 100%;"></div>';
         ?>
 
