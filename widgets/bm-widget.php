@@ -180,18 +180,18 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         ?>
         <!-- refactor out once we can pass object as data attribute -->
         <script type="text/javascript">
-        
+
         if (!passedObj) {
             var passedObj = [];
         }
         var animObj = <?php echo $anim_obj; ?>;
         var <?php echo $anim_id ?> = [];
         <?php echo $anim_id ?>.obj = animObj;
-       
+
        passedObj.push(<?php echo $anim_id ?>);
         </script>
 
-        <?php 
+        <?php
 
     }
 
