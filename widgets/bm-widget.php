@@ -153,6 +153,15 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
+            'should-autoplay',
+            [
+                'label' => __('Autoplay Animation', 'bodymovin-elementor'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'input_type' => 'switcher'
+            ]
+        );
+
+        $this->add_control(
 			'load-offset',
 			[
 				'label' => __( 'Loading Offset from bottom of screen', 'plugin-name' ),
@@ -191,6 +200,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         // $anim_obj = $this->get_settings_for_display("the-object");
         $anim_id = $this->get_settings_for_display("animname");
         $anim_link = $this->get_settings_for_display("animlink");
+        $should_autoplay = $this->get_settings_for_display('should-autoplay');
         $should_loop = $this->get_settings_for_display("shouldloop");
         $load_offset = $this->get_settings_for_display("load-offset");
         $json_link = $this->get_settings_for_display('lottie-file');
@@ -202,7 +212,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         if ('' != $anim_url) {
             echo '<a href="' . $anim_url . '"' . $target . $nofollow . '>';
         }
-        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-loop="' . $should_loop . '" data-load-offset="' . $load_offset['size'] . '" data-bm-link="' . $json_link['url'] . '"></div>';
+        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-autoplay="' . $should_autoplay . '" data-should-loop="' . $should_loop . '" data-load-offset="' . $load_offset['size'] . '" data-bm-link="' . $json_link['url'] . '"></div>';
         if ('' != $anim_link) {
             echo '</a>';
         }

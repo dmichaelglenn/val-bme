@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
         name = annies[i].id;
         animData = annies[i].dataset.bmLink;
         loopy = annies[i].dataset.shouldLoop;
+        autoplay = annies[i].dataset.shouldAutoplay;
         loadOffset = annies[i].dataset.loadOffset / 100;
 
         if (loopy === 'yes') {
@@ -13,13 +14,29 @@ document.addEventListener('DOMContentLoaded', function(){
             loopy = false;
         }
 
+        if (autoplay === 'yes') {
+            autoplay = true;
+        } else {
+            autoplay = false;
+        }
+
+        if (autoplay === true) {
+            loadOffset = 0;
+        }
+
+
+
+        console.log(autoplay);
         var params = {
             container: document.getElementById(name),
             renderer: 'svg',
             loop: loopy,
-            autoplay: false,
-            path: animData
+            autoplay: autoplay,
+            path: animData,
+            offset: loadOffset
          };
+
+         console.log(params);
 
     var anim;
 
