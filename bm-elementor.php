@@ -2,10 +2,10 @@
 
 /**
  * Plugin Name: Bodymovin Elementor
- * Description: Extends Elementor with the ability to incorporate Bodymovin renders within pages
+ * Description: Extends Elementor with the ability to incorporate Lottie/Bodymovin renders within pages
  * Plugin URI: https://valentinecreative.co
  * Author: Valentine Creative
- * Version: 1.2.2
+ * Version: 2.0.1
  * Author URI: https://valentinecreative.co
  *
  * Text Domain: val-bodymovin
