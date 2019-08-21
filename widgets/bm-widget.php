@@ -114,13 +114,22 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             ]
         );
 
+        // $this->add_control(
+        //     'the-object',
+        //     [
+        //         'label' => __('Bodymovin Object', 'bodymovin-elementor'),
+        //         'type' => \Elementor\Controls_Manager::CODE,
+        //         'input_type' => 'JSON',
+        //         'placeholder' => __('Place the Bodymovin object here.', 'bodymovin-elementor'),
+        //     ]
+        // );
+
         $this->add_control(
-            'the-object',
+            'lottie-file',
             [
-                'label' => __('Bodymovin Object', 'bodymovin-elementor'),
-                'type' => \Elementor\Controls_Manager::CODE,
-                'input_type' => 'JSON',
-                'placeholder' => __('Place the Bodymovin object here.', 'bodymovin-elementor'),
+                'label' => __('Lottie File', 'bodymovin-elementor'),
+                'type' => \Elementor\Controls_Manager::MEDIA,
+                'placeholder' => __('Upload the json file as if it were an image.', 'bodymovin-elementor'),
             ]
         );
 
@@ -143,6 +152,25 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+			'load-offset',
+			[
+				'label' => __( 'Loading Offset from bottom of screen', 'plugin-name' ),
+				'type' => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ '%' ],
+				'range' => [
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => '%',
+					'size' => 0,
+				],
+			]
+		);
+
 
         $this->end_controls_section();
 
@@ -160,39 +188,24 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
 
     protected function render()
     {
-        $anim_obj = $this->get_settings_for_display("the-object");
+        // $anim_obj = $this->get_settings_for_display("the-object");
         $anim_id = $this->get_settings_for_display("animname");
         $anim_link = $this->get_settings_for_display("animlink");
         $should_loop = $this->get_settings_for_display("shouldloop");
+        $load_offset = $this->get_settings_for_display("load-offset");
+        $json_link = $this->get_settings_for_display('lottie-file');
         $target = $anim_link['is_external'] ? ' target="_blank"' : '';
         $nofollow = $anim_link['nofollow'] ? ' rel="nofollow"' : '';
         $anim_url = $anim_link['url'];
         $anim_id = preg_replace("/[^A-Za-z0-9]/", '', $anim_id);
 
-
-        if ('' != $anim_link) {
+        if ('' != $anim_url) {
             echo '<a href="' . $anim_url . '"' . $target . $nofollow . '>';
         }
-        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-loop="' . $should_loop . '"></div>';
+        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-loop="' . $should_loop . '" data-load-offset="' . $load_offset['size'] . '" data-bm-link="' . $json_link['url'] . '"></div>';
         if ('' != $anim_link) {
             echo '</a>';
         }
-        ?>
-        <!-- refactor out once we can pass object as data attribute -->
-        <script type="text/javascript">
-
-        if (!passedObj) {
-            var passedObj = [];
-        }
-        var animObj = <?php echo $anim_obj; ?>;
-        var <?php echo $anim_id ?> = [];
-        <?php echo $anim_id ?>.obj = animObj;
-
-       passedObj.push(<?php echo $anim_id ?>);
-        </script>
-
-        <?php
-
     }
 
     protected function _content_template()

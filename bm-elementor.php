@@ -80,7 +80,6 @@ final class Elementor_Bodymovin_Extension
 			self::$_instance = new self();
 		}
 		return self::$_instance;
-
 	}
 
 	/**
@@ -95,7 +94,6 @@ final class Elementor_Bodymovin_Extension
 
 		add_action('init', [$this, 'i18n']);
 		add_action('plugins_loaded', [$this, 'init']);
-
 	}
 
 	/**
@@ -113,7 +111,6 @@ final class Elementor_Bodymovin_Extension
 	{
 
 		load_plugin_textdomain('elementor-bodymovin-extension');
-
 	}
 
 	/**
@@ -163,6 +160,33 @@ final class Elementor_Bodymovin_Extension
 			__FILE__,
 			'bm-elementor'
 		);
+
+		// add_filter( 'wp_check_filetype_and_ext', 'add_json_mimes', 10, 4 );
+
+// function add_json_mimes( $info, $file, $filename, $mimes ) {
+//     $wp_filetype = wp_check_filetype( $filename, $mimes );
+//     $ext = $wp_filetype['ext'];
+//     $type = $wp_filetype['type'];
+
+//     if ( $ext !== 'json' ) {
+//         return $info;
+//     }
+
+//     if ( function_exists( 'finfo_file' ) ) {
+//         // Use finfo_file if available to validate non-image files.
+//         $finfo = finfo_open( FILEINFO_MIME_TYPE );
+//         $real_mime = finfo_file( $finfo, $file );
+//         finfo_close( $finfo );
+
+//         // If the extension matches an alternate mime type, let's use it
+//         if ( in_array( $real_mime, array( 'application/json', 'text/plain' ) ) ) {
+//             $info['ext'] = $ext;
+//             $info['type'] = $type;
+//         }
+//     }
+
+//     return $info;
+// }
 	}
 
 	/**
@@ -187,7 +211,6 @@ final class Elementor_Bodymovin_Extension
 		);
 
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
-
 	}
 
 	/**
@@ -213,7 +236,6 @@ final class Elementor_Bodymovin_Extension
 		);
 
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
-
 	}
 
 	/**
@@ -239,16 +261,16 @@ final class Elementor_Bodymovin_Extension
 		);
 
 		printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message);
-
 	}
 
 
 	public function widget_scripts()
 	{
-		wp_enqueue_script('lottie', 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/4.13.0/bodymovin.js', 'jQuery');
-		wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js');
+		wp_enqueue_script('lottie', plugin_dir_url( __FILE__ ) .  '/assets/js/lottie.js', 'jQuery');
+		wp_enqueue_script('enter-view', plugin_dir_url( __FILE__ ) .  '/assets/js/enter-view.js', 'jQuery');
+		// wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js');
 		// the script below is for when we aren't on a local install
-		// wp_enqueue_script('val-bm-js', dirname(__FILE__) .  '/assets/js/val-bm.js', 'jQuery');
+		wp_enqueue_script('val-bm-js', plugin_dir_url( __FILE__ ) .  '/assets/js/val-bm.js', array('lottie', 'enter-view'));
 	}
 
 	/**
@@ -268,7 +290,6 @@ final class Elementor_Bodymovin_Extension
 
 		// Register widget
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Bodymovin_Widget());
-
 	}
 
 	/**
@@ -288,13 +309,46 @@ final class Elementor_Bodymovin_Extension
 
 		// Register control
 		\Elementor\Plugin::$instance->controls_manager->register_control('control-type-1', new \Bodymovin_Control());
-
 	}
 
-	function val_update() {
-
-	}
+	function val_update()
+	{ }
 }
 
 
 Elementor_Bodymovin_Extension::instance();
+
+add_filter( 'upload_mimes', 'add_json_type', 1, 1 );
+function add_json_type( $mime_types ) {
+  $mime_types['json'] = 'application/json'; // Adding .json extension
+  return $mime_types;
+}
+
+// echo '<h1>' . print_r(get_allowed_mime_types()) . '</h1>';
+
+add_filter( 'wp_check_filetype_and_ext', 'add_json_mimes', 10, 4 );
+
+function add_json_mimes( $info, $file, $filename, $mimes ) {
+    $wp_filetype = wp_check_filetype( $filename, $mimes );
+    $ext = $wp_filetype['ext'];
+    $type = $wp_filetype['type'];
+
+    if ( $ext !== 'json' ) {
+        return $info;
+    }
+
+    if ( function_exists( 'finfo_file' ) ) {
+        // Use finfo_file if available to validate non-image files.
+        $finfo = finfo_open( FILEINFO_MIME_TYPE );
+        $real_mime = finfo_file( $finfo, $file );
+        finfo_close( $finfo );
+
+        // If the extension matches an alternate mime type, let's use it
+        if ( in_array( $real_mime, array( 'application/json', 'text/plain' ) ) ) {
+            $info['ext'] = $ext;
+            $info['type'] = $type;
+        }
+    }
+
+    return $info;
+}
