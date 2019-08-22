@@ -270,7 +270,7 @@ final class Elementor_Bodymovin_Extension
 		wp_enqueue_script('enter-view', plugin_dir_url( __FILE__ ) .  '/assets/js/enter-view.js', 'jQuery');
 		// wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js');
 		// the script below is for when we aren't on a local install
-		wp_enqueue_script('val-bm-js', plugin_dir_url( __FILE__ ) .  '/assets/js/val-bm.js', array('lottie', 'enter-view'));
+		wp_enqueue_script('val-bm-js', plugin_dir_url( __FILE__ ) .  '/custom.js');
 	}
 
 	/**

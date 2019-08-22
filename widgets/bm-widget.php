@@ -133,6 +133,15 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+            'fallback-img',
+            [
+                'label' => __('Fallback Img', 'bodymovin-elementor'),
+                'type' => \Elementor\Controls_Manager::MEDIA,
+                'placeholder' => __('Fallback.', 'bodymovin-elementor'),
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -204,6 +213,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         $should_loop = $this->get_settings_for_display("shouldloop");
         $load_offset = $this->get_settings_for_display("load-offset");
         $json_link = $this->get_settings_for_display('lottie-file');
+        $fallback_img = $this->get_settings_for_display('fallback-img');
         $target = $anim_link['is_external'] ? ' target="_blank"' : '';
         $nofollow = $anim_link['nofollow'] ? ' rel="nofollow"' : '';
         $anim_url = $anim_link['url'];
@@ -212,7 +222,7 @@ class Bodymovin_Widget extends \Elementor\Widget_Base
         if ('' != $anim_url) {
             echo '<a href="' . $anim_url . '"' . $target . $nofollow . '>';
         }
-        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-autoplay="' . $should_autoplay . '" data-should-loop="' . $should_loop . '" data-load-offset="' . $load_offset['size'] . '" data-bm-link="' . $json_link['url'] . '"></div>';
+        echo '<div id="' . $anim_id . '" class="val-bme" style="width: 100%; height: 100%;" data-should-autoplay="' . $should_autoplay . '" data-should-loop="' . $should_loop . '" data-load-offset="' . $load_offset['size'] . '" data-bm-link="' . $json_link['url'] . '" data-bm-fallback="' . $fallback_img['url'] . '"></div>';
         if ('' != $anim_link) {
             echo '</a>';
         }

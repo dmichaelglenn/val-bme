@@ -1,0 +1,23 @@
+{
+  "name": "bm-elementor",
+  "version": "1.0.0",
+  "description": "An Elementor addon boilerplate for rapid development",
+  "main": "custom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmichaelglenn/val-bme.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmichaelglenn/val-bme/issues"
+  },
+  "homepage": "https://github.com/dmichaelglenn/val-bme#readme",
+  "dependencies": {
+    "browser-detect": "^0.2.28",
+    "lottie-web": "^5.5.7"
+  }
+}
