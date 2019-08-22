@@ -5,7 +5,7 @@
  * Description: Extends Elementor with the ability to incorporate Lottie/Bodymovin renders within pages
  * Plugin URI: https://valentinecreative.co
  * Author: Valentine Creative
- * Version: 2.0.1
+ * Version: 2.2.1
  * Author URI: https://valentinecreative.co
  *
  * Text Domain: val-bodymovin
@@ -270,7 +270,7 @@ final class Elementor_Bodymovin_Extension
 		wp_enqueue_script('enter-view', plugin_dir_url( __FILE__ ) .  '/assets/js/enter-view.js', 'jQuery');
 		// wp_enqueue_script('val-bm-js', '/wp-content/plugins/bm-elementor/assets/js/val-bm.js');
 		// the script below is for when we aren't on a local install
-		wp_enqueue_script('val-bm-js', plugin_dir_url( __FILE__ ) .  '/custom.js');
+		wp_enqueue_script('val-bm-js', plugin_dir_url( __FILE__ ) .  '/valbm.js');
 	}
 
 	/**
